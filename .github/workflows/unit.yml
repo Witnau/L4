@@ -1,0 +1,27 @@
+name: Run Unit Tests
+
+# Определяет, когда запускать этот workflow
+on:
+  pull_request:
+    branches: [main]  # Запускать при создании PR в ветку main
+
+jobs:
+  test:
+    # Указывает, на какой ОС будет работать задача
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Клонировать репозиторий
+      - uses: actions/checkout@v2
+
+      # Шаг 2: Установить Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # Указать версию Node.js
+
+      # Шаг 3: Установить зависимости
+      - run: npm ci
+
+      # Шаг 4: Запустить unit-тесты
+      - run: npm test
