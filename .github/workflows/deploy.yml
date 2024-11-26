@@ -3,28 +3,29 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Срабатывает при пуше в ветку main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Загружает код из репозитория
 
-    - name: Install dependencies
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: 16  # Устанавливает Node.js версии 16
 
-    - run: npm ci
+    - name: Install dependencies
+      run: npm install  # Устанавливает зависимости
 
-    - name: Build project
-      run: npm run build
+    - name: Build application
+      run: npm run build  # Сборка приложения в папке build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
+        publish_dir: ./build  # Указывает папку для публикации на GitHub Pages
